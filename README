@@ -1,0 +1,14 @@
+Chicago
+=======
+
+A card game where you play rounds till you have 51 points. 
+
+You always have 5 cards.
+
+Each round consists of two parts:
+
+1. A poker-like run where you get points for having the best hand
+
+2. A final where the sole objective is to win the last of 5 cards
+
+

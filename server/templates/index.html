@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Chicago</title>
+        <link rel="stylesheet" href="{{ static_url('css/screen.css') }}" type="text/css" >
+<!--        <link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>-->
+    </head>
+    <body>
+    <div class="game-container">
+        <div id="status"></div>
+        <section class="auth">
+            <p><a href="#" id="browserid" title="Sign-in with BrowserID"><img src="{{ static_url('images/sign_in_red.png') }}" alt="Sign in" /></a></p>
+        </section>
+        <section class="play-board">
+            <form class="play" style="display:none">
+                <input type="submit" value="Send">
+            </form>
+
+            <form class="restart" style="display:none">
+              <button>Start again</button>
+            </form>
+
+            <form class="yourcards">
+              <button><strong>Go</strong></button>
+            </form>
+
+            <form id="preview" xstyle="display:none">
+              <p>Would you like:</p>
+
+              <div class="container">
+              <input class="card c6D" value="6D" type="button">
+              </div>
+
+              <button type="button" name="yes">Yes!</button>
+              <button type="button" name="no">No :(</button>
+
+            </form>
+
+
+            <form class="chat">
+                <div id="log"></div>
+                <input placeholder="Your name" name="name">
+                <input name="message">
+                <input type="submit" value="Send">
+            </form>
+        </section>
+    </div>
+    <script src="https://browserid.org/include.js" type="text/javascript"></script>
+    <script src="{{ static_url('libs/sockjs.js') }}"></script>
+    <script src="{{ static_url('libs/jquery-1.7.2.min.js') }}"></script>
+    <script src="{{ static_url('browserid.js') }}"></script>
+    <script src="{{ static_url('play.js') }}"></script>
+    <script src="{{ static_url('actions.js') }}"></script>
+    </body>
+</html>

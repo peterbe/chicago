@@ -1,0 +1,212 @@
+/* apply a natural box layout model to all elements */
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Press Start 2P', cursive;
+}
+a {
+    color: #010101;
+    text-decoration: none;
+}
+.game-container {
+
+}
+.auth {
+    margin: 0 auto;
+    width: 300px;
+}
+.play-icons {
+    display: none;
+    margin: 0;
+    padding: 0;
+}
+.icon {
+    list-style: none;
+}
+.rock,
+.paper,
+.scissor {
+    -webkit-transition: left linear 1s, top linear 1s, width 1s, height 1s;
+    -moz-transition: left linear 1s, top linear 1s, width 1s, height 1s;
+    transition: left linear 1s, top linear 1s, width 1s, height 1s;
+}
+.rock {
+    position:absolute;
+    top: 70px;
+    left: 65px;
+}
+.paper {
+    position:absolute;
+    top: 190px;
+    left: 225px;
+}
+.scissor {
+    position:absolute;
+    top: 290px;
+    left: 65px;
+}
+.chosen-weapon {
+    position: absolute;
+    left: 65px;
+    top: 100px;
+    width: 250px;
+    height: 250px;
+    -webkit-transition: left linear 1s, top linear 1s, width 1s, height 1s;
+    -moz-transition: left linear 1s, top linear 1s, width 1s, height 1s;
+    transition: left linear 1s, top linear 1s, width 1s, height 1s;
+}
+.auth {
+    padding-left: 10px;
+}
+.register,
+.hidden {
+    display: none;
+}
+.icon_name {
+    position: absolute;
+    bottom: 150px;
+    left: 150px;
+}
+form {
+    margin: 0;
+    padding: 0;
+}
+input {
+    padding: .3em;
+    border: 1px solid #999;
+    border-radius: 6px;
+}
+input[name="name"] {
+    position: absolute;
+    left: -9999em;
+}
+input[name="message"] {
+    width: 300px;
+}
+#browserid {
+    margin-left: 85px;
+}
+#log {
+    font-family: Courier;
+    background-color: #010101;
+    color: #fff;
+    border: 3px inset #fff;
+    font-size: 10px;
+    height: 100px;
+    overflow: auto;
+}
+#log time {
+    float:right;
+}
+#status span {
+    display: inline-block;
+    margin-bottom: 5px;
+    padding: 5px;
+    width:100%;
+}
+#status .green {
+    background-color: #4BAE97;
+    color: #fff;
+}
+#status .orange {
+    background-color: #D0BB49;
+    color: #fff;
+}
+#status .red {
+    background-color: #BE3C3A;
+    color: #fff;
+}
+.chat {
+    display: none;
+    position: absolute;
+    padding-left: 20px;
+    bottom: 10px;
+}
+.score-status {
+    display: none;
+}
+.score {
+    margin: 0;
+    margin: 5px 8px 0 0;
+    float: right;
+    font-size: 10px;
+}
+.score li {
+    display: inline;
+    list-style: none;
+}
+
+
+.card {
+  background: url(../images/paris.png) no-repeat top left;
+  background-position: 0 0;
+  width: 79px;
+  height: 123px;
+}
+
+.pickedcard {
+  opacity: 0.2;
+}
+
+
+.cAC  { background-position: 0 0 }
+.cAD  { background-position: 0 -123px }
+.cAS  { background-position: 0 -246px }
+
+.cAC  { background-position: -0px -0px }
+.c2C  { background-position: -79px -0px }
+.c3C  { background-position: -158px -0px }
+.c4C  { background-position: -237px -0px }
+.c5C  { background-position: -316px -0px }
+.c6C  { background-position: -395px -0px }
+.c7C  { background-position: -474px -0px }
+.c8C  { background-position: -553px -0px }
+.c9C  { background-position: -632px -0px }
+.c10C { background-position: -711px -0px }
+.cJC  { background-position: -790px -0px }
+.cQC  { background-position: -869px -0px }
+.cKC  { background-position: -948px -0px }
+.cAD  { background-position: -0px -123px }
+.c2D  { background-position: -79px -123px }
+.c3D  { background-position: -158px -123px }
+.c4D  { background-position: -237px -123px }
+.c5D  { background-position: -316px -123px }
+.c6D  { background-position: -395px -123px }
+.c7D  { background-position: -474px -123px }
+.c8D  { background-position: -553px -123px }
+.c9D  { background-position: -632px -123px }
+.c10D { background-position: -711px -123px }
+.cJD  { background-position: -790px -123px }
+.cQD  { background-position: -869px -123px }
+.cKD  { background-position: -948px -123px }
+.cAH  { background-position: -0px -246px }
+.c2H  { background-position: -79px -246px }
+.c3H  { background-position: -158px -246px }
+.c4H  { background-position: -237px -246px }
+.c5H  { background-position: -316px -246px }
+.c6H  { background-position: -395px -246px }
+.c7H  { background-position: -474px -246px }
+.c8H  { background-position: -553px -246px }
+.c9H  { background-position: -632px -246px }
+.c10H { background-position: -711px -246px }
+.cJH  { background-position: -790px -246px }
+.cQH  { background-position: -869px -246px }
+.cKH  { background-position: -948px -246px }
+.cAS  { background-position: -0px -369px }
+.c2S  { background-position: -79px -369px }
+.c3S  { background-position: -158px -369px }
+.c4S  { background-position: -237px -369px }
+.c5S  { background-position: -316px -369px }
+.c6S  { background-position: -395px -369px }
+.c7S  { background-position: -474px -369px }
+.c8S  { background-position: -553px -369px }
+.c9S  { background-position: -632px -369px }
+.c10S { background-position: -711px -369px }
+.cJS  { background-position: -790px -369px }
+.cQS  { background-position: -869px -369px }
+.cKS  { background-position: -948px -369px }
