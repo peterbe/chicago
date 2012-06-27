@@ -13,6 +13,7 @@
             <p><a href="#" id="browserid" title="Sign-in with BrowserID"><img src="{{ static_url('images/sign_in_red.png') }}" alt="Sign in" /></a></p>
         </section>
         <section class="play-board">
+
             <form class="play" style="display:none">
                 <input type="submit" value="Send">
             </form>
@@ -21,15 +22,23 @@
               <button>Start again</button>
             </form>
 
+            <div class="final" style="display:none">
+              <div class="status">
+                <strong>Status:</strong>
+                <span></span>
+              </div>
+              <div class="cards">
+              </div>
+            </div>
+
             <form class="yourcards">
-              <button><strong>Go</strong></button>
+              <button class="go"><strong>Go</strong></button>
             </form>
 
-            <form id="preview" xstyle="display:none">
+            <form id="preview" style="display:none">
               <p>Would you like:</p>
 
               <div class="container">
-              <input class="card c6D" value="6D" type="button">
               </div>
 
               <button type="button" name="yes">Yes!</button>

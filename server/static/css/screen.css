@@ -210,3 +210,7 @@ input[name="message"] {
 .cJS  { background-position: -790px -369px }
 .cQS  { background-position: -869px -369px }
 .cKS  { background-position: -948px -369px }
+.cBACK { background-position: -158px -492px }
+
+
+button.card {border:0px solid white; margin:2px;}

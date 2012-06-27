@@ -12,6 +12,7 @@ class Table(object):
         self.players = players
         self.deck = DECK[:]
         random.shuffle(self.deck)
+        self.in_final = False
         #self.changes = 0
 
     @classmethod

@@ -1,0 +1,5 @@
+* When in final, and you pick a card, it sends a 'discard' socket
+  message instead of (or before) sending 'final_card'.
+  
+* When in final, when it's your turn, your hand should shadow out
+  suits you won't be able to play.   

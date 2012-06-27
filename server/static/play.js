@@ -20,13 +20,14 @@ var Status = (function() {
 })();
 
 var Hand = (function() {
-
+  var hand;
   var discarded = [];
-  var gone = false;
+  var _gone = false;
+  var _in_final = false;
 
   $('form.yourcards').submit(function() {
-    gone = true;
-    $('input.pickedcard').attr('disabled', 'disabled');
+    _gone = true;
+    $('.pickedcard').attr('disabled', 'disabled');
     Play.discard(discarded, function() {
       discarded = [];
     });
@@ -34,7 +35,9 @@ var Hand = (function() {
   });
 
   $('#preview [name="yes"]').on('click', function() {
-    alert("not implemented");
+    Play.accept(function() {
+      $('#preview').hide();
+    });
   });
 
   $('#preview [name="no"]').on('click', function() {
@@ -43,19 +46,15 @@ var Hand = (function() {
     });
   });
 
-//  $('input.card').on('click', function() {
-//  });
-
   return {
      reopen: function() {
-       gone = false;
+       _gone = false;
      },
     preview: function(card) {
-      console.log("PREVIEW", card);
       $('#preview .container .card').remove();
       $('#preview p').text("Would you like to keep this card?");
 
-      $('<input type="button">')
+      $('<button>')
            .click(function() {
              alert('not implemented');
              return false;
@@ -68,11 +67,10 @@ var Hand = (function() {
 
     },
     previewed: function(card, player) {
-      console.log("PREVIEWED", card);
       $('#preview .container .card').remove();
       $('#preview p').text(player + " is offered:");
 
-      $('<input type="button">')
+      $('<button>')
            .click(function() {
              alert('not implemented');
              return false;
@@ -85,32 +83,66 @@ var Hand = (function() {
 
     },
     show_hand: function(cards) {
-       $('.yourcards input.card').remove();
-       $.each(cards, function(i, card) {
-         $('<input type="button">')
-           .click(function() {
-             if (gone) return;
-             if (this.className.search(/pickedcard/) == -1) {
-               discarded.push($(this).val());
-               $(this).addClass('pickedcard');
-             } else {
-               $(this).removeClass('pickedcard');
-               console.log('discarded', discarded);
-               discarded.splice($.inArray($(this).val(), discarded), 1);
-               console.log('discarded', discarded);
-             }
-
-           })
-           .val(card)
-             .text(card)
-               .addClass('card').addClass('c' + card)
-                 .prependTo($('.yourcards'));
-       });
+      $('.yourcards .card').addClass('oldcard')
+      $.each(cards, function(i, card) {
+        var newcard = $('<button>')
+          .on('click', function() {
+            if (_gone || _in_final) return;
+            if (this.className.search(/pickedcard/) == -1) {
+              discarded.push($(this).val());
+              $(this).addClass('pickedcard');
+            } else {
+              $(this).removeClass('pickedcard');
+              discarded.splice($.inArray($(this).val(), discarded), 1);
+            }
+            return false;
+          })
+            .val(card)
+                .addClass('card').addClass('c' + card);
+        newcard.appendTo($('.yourcards'));
+      });
+      $('.yourcards .oldcard').remove();
+      hand = cards;
       $('<p>')
-         .append($('<span>').text(($('#log p').size() + 1) + ': ' + cards.join(', ')))
-           .prependTo($('#log'));
-       //$('#log').scrollTop($('#log').scrollTop() + 1000);
-     }
+        .append($('<span>').text(($('#log p').size() + 1) + ': ' + cards.join(', ')))
+          .prependTo($('#log'));
+      //$('#log').scrollTop($('#log').scrollTop() + 1000);
+    },
+    final_start: function() {
+      $('button.card', '.yourcards').off('click');
+      _in_final = true;
+    },
+    lay_final_card: function(card) {
+      var c = $('.final .cards');
+      if (!$('.you', c).size()) {
+        $('<div>')
+          .addClass('you').addClass('pile')
+            .data('player', 'you')
+            .append($('<strong>').text("You"))
+              .appendTo(c);
+      }
+      $('.you', c)
+        .append($('<button>').addClass('card').addClass('c' + card));
+
+    },
+    laid_final_card: function(card, player) {
+      var c = $('.final .cards');
+      var players_pile = null;
+      $('div.pile', c).each(function(i, each) {
+        if ($(each).data('player') == player) {
+          players_pile = $(each);
+        }
+      });
+      if (!players_pile) {
+        players_pile = $('<div>')
+          .addClass('opponent').addClass('pile')
+            .data('player', player)
+            .append($('<strong>').text(player))
+              .appendTo(c);
+      }
+      players_pile
+        .append($('<button>').addClass('card').addClass('c' + card));
+    }
   }
 })();
 
@@ -118,6 +150,7 @@ var Hand = (function() {
 var Play = (function() {
   var _socket;
   var _ready = false;
+  var _in_final = false;
 
   function reset_animation() {
     $("form.restart").hide();
@@ -151,23 +184,9 @@ var Play = (function() {
       return false;
     });
 
-    $('li.icon').on('click', function() {
-      if (!_ready) return;
-      var f = $('form.play');
-      $('input[type="hidden"]', f).remove();
-      $('<input type="hidden" name="chosen">')
-        .val($(this).data('button'))
-        .appendTo(f);
-      Status.update('Button chosen', 'orange');
-      f.show();
-      setTimeout(function() {
-        if ($('form.play:visible').size()) {
-          $('form.play').submit().hide();
-        }
-      }, 2 * 1000);
-    });
 
     $('form.play').submit(function() {
+      alert("Apparently not Obsolete?");
       var button = $('input[type="hidden"]', this).val();
       _socket.send_json({button: button});
       Status.update('Checking...', 'orange');
@@ -193,7 +212,37 @@ var Play = (function() {
   function refuse(callback) {
     _socket.send_json({refuse: true});
     callback()
+  }
 
+  function accept(callback) {
+    _socket.send_json({accept: true});
+    callback();
+  }
+
+  function final_(state) {
+    _in_final = true;
+
+    $('.final:hidden').fadeIn(500);
+    $('.yourcards button.go').hide();
+    if (state.status) {
+      $('.status span', '.final').text(state.status);
+    }
+    if (state.laid) {
+      L('LAID', state.laid);
+      Hand.laid_final_card(state.laid.card, state.laid.player);
+    }
+    if (state.turn) {
+      if (!state.status) {
+        $('.status span', '.final').text("Your turn, pick a card");
+      }
+      $('.yourcards .card').off('click').on('click', function() {
+        _socket.send_json({final_card: $(this).val()});
+        Hand.lay_final_card($(this).val());
+        $(this).fadeOut(300);
+      });
+    } else {
+      $('.yourcards .card').off('click');
+    }
   }
 
   return {
@@ -201,7 +250,9 @@ var Play = (function() {
      has_logged_in: has_logged_in,
      set_ready: set_ready,
       discard: discard,
-      refuse: refuse
+      refuse: refuse,
+      accept: accept,
+      final_: final_
   };
 
 })();
@@ -231,7 +282,6 @@ var initsock = function(callback) {
       Status.update_score(e.data.update_score.wins,
                           e.data.update_score.draws,
                           e.data.update_score.losses);
-
     }
 
     if (e.data.message) {
@@ -251,9 +301,17 @@ var initsock = function(callback) {
       Hand.previewed(e.data.previewed, e.data.player);
     }
 
+    if (e.data['final']) {
+      Play.final_(e.data['final']);
+    }
+
     if (e.data.hand) {
       Hand.show_hand(e.data.hand);
       Hand.reopen();
+    }
+
+    if (e.data.refused || e.data.accepted) {
+      $('#preview').hide();
     }
 
     if (e.data.ready) {
